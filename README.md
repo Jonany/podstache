@@ -1,3 +1,3 @@
 # Podstache
 
-&#1F978;
+A fun little app that helps you stache (🥸) away podcasts.

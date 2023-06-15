@@ -31,3 +31,4 @@ At the very least by copying the upstream feed and replacing the file locations 
 - [Svelte Tutorial](https://learn.svelte.dev/tutorial)
 - [SvelteKit Docs](https://kit.svelte.dev/docs/introduction)
 - [Possible NPM library for RSS feeds](https://github.com/jpmonette/feed)
+- [Emojis](https://unicode.org/Public/emoji/15.0/emoji-sequences.txt)

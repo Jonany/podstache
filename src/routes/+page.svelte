@@ -1,10 +1,11 @@
 <script lang="ts">
-    let submittedUrls:string[] = ['http://sdsds'];
-    let url:string = "";
+    import { feeds } from "../stores";
+	import { Feed } from "../types";
+    let feedUrl:string = "";
 
     function addUrl(): any {
-        submittedUrls = [...submittedUrls, url];
-        url = "";
+        feeds.add(new Feed(feedUrl));
+        feedUrl = "";
     }
 </script>
   
@@ -24,18 +25,21 @@
         <input type="url"
             class="p-1 border-solid border-2 border-slate-500"
             placeholder="Enter URL Here"
-            required bind:value={url} />
+            required bind:value={feedUrl} />
         <button type="submit"
             class="p-1 border-solid border-2 border-slate-500">Add Feed</button>
     </form>
 
-    {#if submittedUrls.length > 0}
-        <h3 class="pt-10 text-2xl">Submitted URLs</h3>
-    
+    <h3 class="pt-10 text-2xl">Submitted URLs</h3>
+
+    {#if $feeds}
         <ol class="pt-5 text-lime-800">
-            {#each submittedUrls as submittedUrl}
-                <li class="list-item">{submittedUrl}</li>
+            {#each $feeds as feed}
+                <li class="list-item">Added: {feed.addedOn.toLocaleString()} - {feed.url}</li>
             {/each}
         </ol>
+    {:else}
+        <h4 class="pt-5 text-lime-800">Nothing here...yet 😏</h4>
     {/if}
+
 </main>

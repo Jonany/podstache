@@ -1,8 +1,19 @@
 import { writable } from 'svelte/store';
-import type { Feed } from './types';
+import { Feed } from './types';
+import savedData from './data.json';
 
 function createFeeds() {
-    const { subscribe, set, update } = writable<Feed[]>();
+    let defaultFeeds:Feed[] = [];
+
+    if(savedData.feeds) {
+        defaultFeeds = savedData.feeds
+            .map(savedFeed => new Feed(
+                savedFeed.url,
+                new Date(Date.parse(savedFeed.addedOn))
+            ));
+    }
+
+    const { subscribe, update } = writable<Feed[]>(defaultFeeds);
 
     return {
         subscribe,

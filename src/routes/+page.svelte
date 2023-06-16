@@ -1,6 +1,7 @@
 <script lang="ts">
     import { feeds } from "../stores";
 	import { Feed } from "../types";
+    import DisplayFeed from "../components/DisplayFeed.svelte";
     let feedUrl:string = "";
 
     function addUrl(): any {
@@ -35,7 +36,9 @@
     {#if $feeds}
         <ol class="pt-5 text-lime-800">
             {#each $feeds as feed}
-                <li class="list-item">Added: {feed.addedOn.toLocaleString()} - {feed.url}</li>
+                <li class="list-item">
+                    <DisplayFeed feed={feed} />
+                </li>
             {/each}
         </ol>
     {:else}

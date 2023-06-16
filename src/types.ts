@@ -1,8 +1,9 @@
 export class Feed {
     url:string;
-    addedOn:Date = new Date();
+    addedOn:Date;
 
-    constructor(url:string) {
+    constructor(url:string, addedOn?:Date) {
         this.url = url;
+        this.addedOn = addedOn ?? new Date();
     }
 }

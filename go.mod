@@ -1,4 +1,4 @@
-module github.com/jonany/pddl-go/v2
+module github.com/jonany/podstache/v2
 
 go 1.21.5
 

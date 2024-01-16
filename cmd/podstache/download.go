@@ -1,4 +1,4 @@
-package podstache
+package main
 
 import (
 	"fmt"

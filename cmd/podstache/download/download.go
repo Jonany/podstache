@@ -1,4 +1,4 @@
-package main
+package download
 
 import (
 	"fmt"
@@ -15,11 +15,11 @@ import (
 )
 
 type DownloadOptions struct {
-	FeedFilePath       string
-	FeedLimit          int
-	ItemLimit          int
-	MaxDownloadWorkers int
-	DownloadPath       string
+	FeedFilePath        string
+	FeedLimit           int
+	ItemLimit           int
+	DownloadWorkerLimit int
+	DownloadPath        string
 }
 
 func Download(options DownloadOptions) {
@@ -34,7 +34,7 @@ func Download(options DownloadOptions) {
 	bar := InitProgressBar(len(requests))
 
 	coreCount := runtime.NumCPU() - 1
-	workerCount := min(len(requests), options.MaxDownloadWorkers, coreCount)
+	workerCount := min(len(requests), options.DownloadWorkerLimit, coreCount)
 	respch := client.DoBatch(workerCount, requests...)
 
 	for resp := range respch {

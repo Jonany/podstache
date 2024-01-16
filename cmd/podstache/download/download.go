@@ -9,9 +9,8 @@ import (
 
 	"github.com/cavaliergopher/grab/v3"
 	"github.com/gilliek/go-opml/opml"
-	"github.com/k0kubun/go-ansi"
+	"github.com/jonany/podstache/v2/cmd/podstache/progress"
 	"github.com/mmcdole/gofeed"
-	"github.com/schollz/progressbar/v3"
 )
 
 type DownloadOptions struct {
@@ -35,7 +34,7 @@ func Download(options DownloadOptions) DownloadResult {
 	client := grab.NewClient()
 	requests := BuildDownloadQueue(doc.Outlines(), options.FeedLimit, options.ItemLimit, options.DownloadPath)
 
-	bar := InitProgressBar(len(requests))
+	bar := progress.Create(len(requests))
 
 	coreCount := runtime.NumCPU() - 1
 	workerCount := min(len(requests), options.DownloadWorkerLimit, coreCount)
@@ -48,6 +47,7 @@ func Download(options DownloadOptions) DownloadResult {
 		}
 	}
 	bar.Finish()
+	fmt.Println()
 
 	downloadedFiles := make([]string, 0)
 	for _, req := range requests {
@@ -94,25 +94,6 @@ func BuildDownloadQueue(outlines []opml.Outline, feedLimit int, itemLimit int, o
 	}
 
 	return requests
-}
-
-// TODO: Try https://github.com/vbauerster/mpb
-func InitProgressBar(total int) *progressbar.ProgressBar {
-	return progressbar.NewOptions(total,
-		progressbar.OptionSetWriter(ansi.NewAnsiStdout()),
-		progressbar.OptionEnableColorCodes(true),
-		progressbar.OptionShowBytes(true),
-		progressbar.OptionFullWidth(),
-		progressbar.OptionShowCount(),
-		progressbar.OptionSetVisibility(true),
-		progressbar.OptionSetTheme(progressbar.Theme{
-			Saucer:        "[_light_magenta_] [reset]",
-			SaucerHead:    "[_light_cyan_] [reset]",
-			SaucerPadding: " ",
-			BarStart:      "",
-			BarEnd:        "",
-		}),
-	)
 }
 
 func Detox(input string) string {

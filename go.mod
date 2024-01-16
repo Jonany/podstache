@@ -9,6 +9,7 @@ require (
 	github.com/mmcdole/gofeed v1.2.1
 	github.com/schollz/progressbar/v3 v3.14.1
 	github.com/spf13/viper v1.18.2
+	github.com/xfrr/goffmpeg v1.0.0
 )
 
 require (

@@ -112,6 +112,13 @@ github.com/spf13/viper/internal/features
 # github.com/subosito/gotenv v1.6.0
 ## explicit; go 1.18
 github.com/subosito/gotenv
+# github.com/xfrr/goffmpeg v1.0.0
+## explicit; go 1.20
+github.com/xfrr/goffmpeg
+github.com/xfrr/goffmpeg/media
+github.com/xfrr/goffmpeg/pkg/cmd
+github.com/xfrr/goffmpeg/pkg/duration
+github.com/xfrr/goffmpeg/transcoder
 # go.uber.org/atomic v1.9.0
 ## explicit; go 1.13
 go.uber.org/atomic

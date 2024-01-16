@@ -22,7 +22,11 @@ type DownloadOptions struct {
 	DownloadPath        string
 }
 
-func Download(options DownloadOptions) {
+type DownloadResult struct {
+	Files []string
+}
+
+func Download(options DownloadOptions) DownloadResult {
 	doc, err := opml.NewOPMLFromFile(options.FeedFilePath)
 	if err != nil {
 		log.Fatal(err)
@@ -44,6 +48,15 @@ func Download(options DownloadOptions) {
 		}
 	}
 	bar.Finish()
+
+	downloadedFiles := make([]string, 0)
+	for _, req := range requests {
+		downloadedFiles = append(downloadedFiles, req.Filename)
+	}
+
+	return DownloadResult{
+		Files: downloadedFiles,
+	}
 }
 
 func BuildDownloadQueue(outlines []opml.Outline, feedLimit int, itemLimit int, outpath string) []*grab.Request {

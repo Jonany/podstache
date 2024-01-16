@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/jonany/podstache/v2/cmd/podstache/progress"
 	"github.com/xfrr/goffmpeg/transcoder"
 )
 
@@ -34,18 +33,15 @@ func Transcode(files []string) []string {
 			break
 		}
 
+		trans.MediaFile().SetAudioCodec("libopus")
+		trans.MediaFile().SetAudioBitRate("24k")
+		trans.MediaFile().SetAudioRate(24000)
+		trans.MediaFile().SetAudioChannels(1)
+
 		fmt.Println("Transcoding...")
-		done := trans.Run(true)
-		prog := trans.Output()
-
-		bar := progress.Create(100)
-		for p := range prog {
-			bar.Set(int(p.Progress))
-		}
-		bar.Finish()
-		fmt.Println()
-
+		done := trans.Run(false)
 		err = <-done
+
 		if err != nil {
 			fmt.Printf("Error transcoding file: %s", err)
 			break

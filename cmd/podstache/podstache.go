@@ -29,6 +29,6 @@ func main() {
 		})
 
 		transRes := convert.Transcode(res.Files)
-		fmt.Printf("Transcoded %d files", len(transRes))
+		fmt.Printf("Transcoded %d files\n", len(transRes))
 	}
 }

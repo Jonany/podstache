@@ -2,7 +2,10 @@ package download
 
 import (
 	"fmt"
+	"io"
 	"log"
+	"net/http"
+	"os"
 	"regexp"
 	"runtime"
 	"strings"
@@ -70,6 +73,7 @@ func BuildDownloadQueue(outlines []opml.Outline, feedLimit int, itemLimit int, o
 		feed, _ := fp.ParseURL(url)
 
 		feedTitle := Detox(feed.Title)
+		feedPath := outpath + "/" + feedTitle
 		itemCount := min(len(feed.Items), itemLimit)
 		fmt.Printf(
 			"Title: %s, Item Count: %d, 0th Item: %s\n",
@@ -78,13 +82,15 @@ func BuildDownloadQueue(outlines []opml.Outline, feedLimit int, itemLimit int, o
 			feed.Items[0].Title,
 		)
 
+		saveFeedFile(feedPath, url)
+
 		for j := 0; j < itemCount; j++ {
 			item := feed.Items[j]
 			enclosure := item.Enclosures[0]
 			url := enclosure.URL
 			urlParts := strings.Split(url, "/")
 			fileName := Detox(urlParts[len(urlParts)-1])
-			filePath := outpath + "/" + feedTitle + "/" + fileName
+			filePath := feedPath + "/" + fileName
 			req, err := grab.NewRequest(filePath, enclosure.URL)
 
 			if err == nil && req != nil {
@@ -106,4 +112,24 @@ func Detox(input string) string {
 		dash.ReplaceAllString(
 			underscore.ReplaceAllString(input, "_"), "-"),
 		"$1"), "")
+}
+
+func saveFeedFile(path string, url string) {
+	resp, err := http.Get(url)
+	if err != nil {
+		fmt.Printf("Unable to get URL: %s", url)
+	}
+	defer resp.Body.Close()
+
+	err = os.MkdirAll(path, 0750)
+	if err != nil {
+		fmt.Printf("Unable to create path: %s", path)
+	}
+
+	out, err := os.Create(path + "/feed.xml")
+	if err != nil {
+		fmt.Printf("Unable to create feed file: %s/feed.xml", path)
+	}
+	defer out.Close()
+	io.Copy(out, resp.Body)
 }

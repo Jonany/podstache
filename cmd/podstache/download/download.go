@@ -29,6 +29,7 @@ type DownloadResult struct {
 }
 
 func Download(options DownloadOptions) DownloadResult {
+	fmt.Printf("Parsing feed file: %s", options.FeedFilePath)
 	doc, err := opml.NewOPMLFromFile(options.FeedFilePath)
 	if err != nil {
 		log.Fatal(err)
@@ -86,12 +87,16 @@ func BuildDownloadQueue(outlines []opml.Outline, feedLimit int, itemLimit int, o
 
 		for j := 0; j < itemCount; j++ {
 			item := feed.Items[j]
-			enclosure := item.Enclosures[0]
-			url := enclosure.URL
-			urlParts := strings.Split(url, "/")
-			fileName := Detox(urlParts[len(urlParts)-1])
-			filePath := feedPath + "/" + fileName
-			req, err := grab.NewRequest(filePath, enclosure.URL)
+			// TODO: Validate URL
+			url := item.Enclosures[0].URL
+
+			// TODO: Support custom format
+			// TODO: Change default to yyyy-mm-dd_title.ext
+			title := Detox(fmt.Sprintf("%d_%s", j+1, item.Title))
+			urlParts := strings.Split(url, ".")
+			fileExt := Detox(urlParts[len(urlParts)-1])
+			filePath := fmt.Sprintf("%s/%s.%s", feedPath, title, fileExt)
+			req, err := grab.NewRequest(filePath, url)
 
 			if err == nil && req != nil {
 				requests = append(requests, req)

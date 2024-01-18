@@ -20,15 +20,22 @@ func main() {
 		fmt.Printf("Unable to read in config file: %s\n", configFile)
 	} else {
 		fmt.Printf("Found config file: %s\n", configFile)
+		workerLimit := viper.GetInt("DOWNLOAD_WORKER_LIMIT")
 		res := download.Download(download.DownloadOptions{
 			FeedFilePath:        viper.GetString("FEED_FILE_PATH"),
 			DownloadPath:        viper.GetString("DOWNLOAD_PATH"),
 			FeedLimit:           viper.GetInt("FEED_LIMIT"),
 			ItemLimit:           viper.GetInt("ITEM_LIMIT"),
-			DownloadWorkerLimit: viper.GetInt("DOWNLOAD_WORKER_LIMIT"),
+			DownloadWorkerLimit: workerLimit,
 		})
 
-		transRes := convert.Transcode(res.Files)
+		transRes := convert.Transcode(res.Files, workerLimit)
 		fmt.Printf("Transcoded %d files\n", len(transRes))
+		// for _, res := range transRes {
+		// 	if res.Success {
+		// 		fmt.Printf("Removing input file: %s\n", res.InputFile)
+		// 		os.Remove(res.InputFile)
+		// 	}
+		// }
 	}
 }

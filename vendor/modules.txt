@@ -1,6 +1,10 @@
-# github.com/PuerkitoBio/goquery v1.8.0
+# github.com/PuerkitoBio/goquery v1.8.1
 ## explicit; go 1.13
 github.com/PuerkitoBio/goquery
+# github.com/a-h/templ v0.2.513
+## explicit; go 1.20
+github.com/a-h/templ
+github.com/a-h/templ/safehtml
 # github.com/andybalholm/cascadia v1.3.1
 ## explicit; go 1.16
 github.com/andybalholm/cascadia
@@ -119,8 +123,8 @@ github.com/xfrr/goffmpeg/media
 github.com/xfrr/goffmpeg/pkg/cmd
 github.com/xfrr/goffmpeg/pkg/duration
 github.com/xfrr/goffmpeg/transcoder
-# go.uber.org/atomic v1.9.0
-## explicit; go 1.13
+# go.uber.org/atomic v1.10.0
+## explicit; go 1.18
 go.uber.org/atomic
 # go.uber.org/multierr v1.9.0
 ## explicit; go 1.19

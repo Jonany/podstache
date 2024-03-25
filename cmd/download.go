@@ -12,7 +12,6 @@ import (
 
 	"github.com/cavaliergopher/grab/v3"
 	"github.com/gilliek/go-opml/opml"
-	"github.com/jonany/podstache/v2/cmd/podstache/progress"
 	"github.com/mmcdole/gofeed"
 )
 
@@ -38,7 +37,7 @@ func Download(options DownloadOptions) DownloadResult {
 	client := grab.NewClient()
 	requests := BuildDownloadQueue(doc.Outlines(), options.FeedLimit, options.ItemLimit, options.DownloadPath)
 
-	bar := progress.Create(len(requests))
+	bar := Create(len(requests))
 
 	coreCount := runtime.NumCPU() - 1
 	workerCount := min(len(requests), options.DownloadWorkerLimit, coreCount)
